@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produtos{% endblock %}
+{% block toolbar %}
+  <a class="btn btn-success" href="{{ actions.create }}" role="button">Novo Produto</a>
+{% endblock %}
+
+{% block body %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Código</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Preço</th>
+      <th scope="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+      <tr>
+        <td>{{ product.code }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.formattedPrice }}</td>
+        <td style="width: 8em;text-align: right;">
+          <div class="btn-group" role="group" aria-label="Ações">
+            <a role="button" href="{{ product.actions.edit }}" class="btn btn-primary btn-sm">Editar</a>
+            <a role="button" href="{{ product.actions.delete }}" class="btn btn-danger btn-sm ce-delete-confirm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pedidos{% endblock %}
+{% block toolbar %}
+  <a class="btn btn-success" href="{{ actions.create }}" role="button">Novo Pedido</a>
+{% endblock %}
+
+{% block body %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Número</th>
+      <th scope="col">Cliente</th>
+      <th scope="col">Data de Emissão</th>
+      <th scope="col">Valor Total</th>
+      <th scope="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+      <tr>
+        <td>{{ order.number }}</td>
+        <td>{{ order.customer.name }}</td>
+        <td>{{ order.formattedIssuedAt }}</td>
+        <td>{{ order.formattedTotalPrice }}</td>
+        <td style="width: 8em;text-align: right;">
+          <div class="btn-group" role="group" aria-label="Ações">
+            <a role="button" href="{{ order.actions.delete }}" class="btn btn-danger btn-sm ce-delete-confirm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

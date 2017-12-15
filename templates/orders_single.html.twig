@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Realizar Pedido{% endblock %}
+{% block toolbar %}
+  <a class="btn btn-secondary" href="{{ actions.back }}" role="button">Voltar para Pedidos</a>
+{% endblock %}
+
+{% block body %}
+<form action="{{ actions.save }}" method="POST">
+  <div class="form-group">
+    <label for="customer">Cliente</label>
+    <select class="form-control" id="customer" name="customer" value="{{ order.customer }}" required>
+      <option value="" disabled>Selecione um cliente</option>
+      {% for person in persons %}
+        <option value="{{ person.id }}">{{ person.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="birthdate">Itens</label>
+    <div class="dropdown" style="margin-bottom: .5em;">
+      <button class="btn btn-success dropdown-toggle" type="button" id="produtos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Adicionar produto
+      </button>
+      <div class="dropdown-menu" aria-labelledby="produtos">
+        {% for product in products %}
+          <a class="dropdown-item ce-orderitems-product" href="#" data-id="{{ product.id }}" data-price="{{ product.price }}" data-formatted-price="{{ product.formattedPrice }}">{{ product.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Produto</th>
+          <th scope="col">Valor Unitário</th>
+          <th scope="col">Quantidade</th>
+          <th scope="col">Desconto (%)</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="ce-orderitems-list">
+        <tr id="ce-orderitems-sample" style="display: none;">
+          <td data-role="product"></td>
+          <td data-role="unitPrice"></td>
+          <td data-role="quantity">
+            <input type="number" data-role="quantity" min="1" value="1">
+          </td>
+          <td>
+            <input type="number" data-role="percentDiscount" min="0" max="100" value="0">
+          </td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Ações">
+              <a role="button" href="#" class="btn btn-danger btn-sm ce-delete-confirm" data-role="delete">Excluir</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <input type="hidden" id="ce-orderitems-input" name="items" value="[]">
+  <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+{% endblock %}
