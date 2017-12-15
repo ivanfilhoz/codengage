@@ -22,23 +22,25 @@ class OrderController extends Controller
             'create' => '/orders/new'
         ];
 
-        $orders = $this->getDoctrine()
-            ->getRepository(Order::class)
-            ->list();
+        $request = Request::createFromGlobals();
+        $repository = $this->getDoctrine()
+            ->getRepository(Order::class);
+        $search = $request->get('search');
+
+        if ($search) {
+            $orders = $repository->search($search);
+        } else {
+            $orders = $repository->list();
+        }
 
         return $this->render('orders.html.twig', [
             'actions' => $actions,
             'orders' => array_map(function ($order) {
-                $customer = $this->getDoctrine()
-                    ->getRepository(Person::class)
-                    ->read($order['customer']->getId());
-
                 $actions = [
                     'delete' => '/orders/' . $order['id'] . '/delete'
                 ];
 
                 return array_merge($order, [
-                    'customer' => $customer,
                     'actions' => $actions
                 ]);
             }, $orders)

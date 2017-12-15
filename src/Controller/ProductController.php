@@ -19,9 +19,16 @@ class ProductController extends Controller
             'create' => '/products/new'
         ];
 
-        $products = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->list();
+        $request = Request::createFromGlobals();
+        $repository = $this->getDoctrine()
+            ->getRepository(Product::class);
+        $search = $request->get('search');
+
+        if ($search) {
+            $products = $repository->search($search);
+        } else {
+            $products = $repository->list();
+        }
 
         return $this->render('products.html.twig', [
             'actions' => $actions,

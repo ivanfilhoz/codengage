@@ -5,8 +5,11 @@ namespace App\Repository;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Tool\IFormatterRepository;
+use App\Tool\Formatter;
+use App\Tool\Search;
 
-class ProductRepository extends ServiceEntityRepository
+class ProductRepository extends ServiceEntityRepository implements IFormatterRepository
 {
     public function __construct(RegistryInterface $registry)
     {
@@ -36,14 +39,28 @@ class ProductRepository extends ServiceEntityRepository
         return array_map([$this, 'format'], $products);
     }
 
+    public function search($term)
+    {
+        $products = $this->list();
+        $search = new Search($products);
+
+        return $search->byKey($term, [
+            'code',
+            'name',
+            'formattedPrice'
+        ]);
+    }
+
     public function format($product)
     {
+        $formatter = new Formatter();
+
         return [
             'id' => $product->getId(),
             'code' => $product->getCode(),
             'name' => $product->getName(),
             'price' => $product->getPrice(),
-            'formattedPrice' => 'R$ ' . str_replace('.', ',', number_format($product->getPrice(), 2))
+            'formattedPrice' => $formatter->formatCurrency($product->getPrice(), 2)
         ];
     }
 }

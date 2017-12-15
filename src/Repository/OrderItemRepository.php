@@ -12,17 +12,4 @@ class OrderItemRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, OrderItem::class);
     }
-
-    /*
-    public function findBySomething($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->where('o.something = :value')->setParameter('value', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 }

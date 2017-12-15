@@ -19,9 +19,16 @@ class PersonController extends Controller
             'create' => '/persons/new'
         ];
 
-        $persons = $this->getDoctrine()
-            ->getRepository(Person::class)
-            ->list();
+        $request = Request::createFromGlobals();
+        $repository = $this->getDoctrine()
+            ->getRepository(Person::class);
+        $search = $request->get('search');
+
+        if ($search) {
+            $persons = $repository->search($search);
+        } else {
+            $persons = $repository->list();
+        }
 
         return $this->render('persons.html.twig', [
             'actions' => $actions,
