@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<form action="{{ actions.save }}" method="POST">
+<form action="{{ actions.save }}" method="POST" id="ce-orderitems-form">
   <div class="form-group">
     <label for="customer">Cliente</label>
     <select class="form-control" id="customer" name="customer" value="{{ order.customer }}" required>
@@ -18,6 +18,9 @@
   </div>
   <div class="form-group">
     <label for="birthdate">Itens</label>
+    <div class="alert alert-danger" role="alert" id="ce-orderitems-alert" style="display: none;">
+      Insira, no mínimo, 1 (um) produto na lista.
+    </div>
     <div class="dropdown" style="margin-bottom: .5em;">
       <button class="btn btn-success dropdown-toggle" type="button" id="produtos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Adicionar produto
