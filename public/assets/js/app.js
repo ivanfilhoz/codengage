@@ -1,4 +1,14 @@
 (function () {
+  // Confirm all deletions
+  $('.ce-delete-confirm').each(function (key, el) {
+    el.addEventListener('click', function (event) {
+      if (!window.confirm('Deseja remover este item? Essa ação não pode ser desfeita.')) {
+        event.preventDefault()
+      }
+    })
+  })
+
+  // Order items form
   var orderItemsForm = $('#ce-orderitems-form')[0]
 
   if (orderItemsForm) {
